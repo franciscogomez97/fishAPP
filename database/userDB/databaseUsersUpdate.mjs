@@ -8,7 +8,7 @@ async function addNewColumn() {
     });
 
     // ADD COLUMN
-    await db.exec(`ALTER TABLE fishes ADD COLUMN photoUrl TEXT`);
+    await db.exec(`ALTER TABLE users ADD COLUMN photoUrl TEXT`);
 
     console.log('New column added.');
     await db.close();

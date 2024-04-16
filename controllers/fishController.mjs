@@ -33,7 +33,7 @@ async function addFish(req, res) {
         } catch (error) {
             res.status(500).send({ error: error.message });
         }
-}
+};
 
 // Get all fish data
 async function getFishes(req, res) {
@@ -44,7 +44,7 @@ async function getFishes(req, res) {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-}
+};
 
 // Get fish data by id
 async function getFishById(req, res) {
@@ -59,7 +59,7 @@ async function getFishById(req, res) {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-}
+};
 
 // Patch fish reg
 async function patchFishParams(req, res) {
@@ -89,7 +89,7 @@ async function patchFishParams(req, res) {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-}
+};
 
 // Delete fish
 async function deleteFish (req, res) {
@@ -107,6 +107,6 @@ async function deleteFish (req, res) {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-}
+};
 
 export { addFish, getFishes, getFishById, patchFishParams, deleteFish };
