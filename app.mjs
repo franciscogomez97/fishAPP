@@ -16,6 +16,7 @@ setupDatabase();
 // Express server
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
 // Routes
 app.get('/', (req, res) => {
@@ -27,7 +28,7 @@ app.listen(PORT, () => {
 })
 
 // Post (Add a reg in DB)
-app.post('/addFish', async (req, res) => {
+app.post('/addfish', async (req, res) => {
     const { species, weight, location, dateCaught, lure, lureColour, waterTemp } = req.body;
 
     // Check if required fields are present
@@ -46,7 +47,7 @@ app.post('/addFish', async (req, res) => {
         weight = 0;
     }
 
-    //SQLite insert
+    //SQL insert
     try {
         const result = await db.run(
             'INSERT INTO fishes (species, weight, location, dateCaught, lure, lureColour, waterTemp) VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -58,8 +59,8 @@ app.post('/addFish', async (req, res) => {
     }
 });
 
-//Get Fish Data
-app.get('/getFish', async (req, res) => {
+//Get Fish Data (all)
+app.get('/getfish', async (req, res) => {
     try {
         const fishes = await db.all(`SELECT * FROM fishes`);
         res.send(fishes);
@@ -68,7 +69,8 @@ app.get('/getFish', async (req, res) => {
     }
 });
 
-app.get('/getFish/:id', async (req, res) => {
+//Get Fish Data (only one)
+app.get('/getfish/:id', async (req, res) => {
     try {
         const fish = await db.get(`SELECT * FROM fishes WHERE id = ?`, [req.params.id]);
         if (fish) {
@@ -81,13 +83,29 @@ app.get('/getFish/:id', async (req, res) => {
     }
 });
 
-//Update fish reg
-app.put('/updateFish/:id', async (req, res) => {
-    const { species, weight, location, dateCaught, lure, lureColour, waterTemp } = req.body;
+//PATCH fish reg (only one param)
+app.patch('/patchfish/:id', async (req, res) => {
+
+    //Array with the fields that can be updated
+    const fields = ['species', 'weight', 'location', 'dateCaught', 'lure', 'lureColour', 'waterTemp'];
+
+    //Filter the fields that user wants to update, map it to a string (location = ?) and create an array with the values (join)
+    const updates = fields.filter(field => req.body[field] !== undefined).map(field => `${field} = ?`).join(", ");
+
+    //The same filter but with the values
+    const values = fields.filter(field => req.body[field] !== undefined).map(field => req.body[field]);
+
+    if (!updates) {
+        return res.status(400).send({ error: "No valid fields provided for update" });
+    }
+
+    //Add the fish id to the values array
+    values.push(req.params.id);
+
     try {
         const result = await db.run(
-            `UPDATE fishes SET species = ?, weight = ?, location = ?, dateCaught = ?, lure = ?, lureColour = ?, waterTemp = ? WHERE id = ?`,
-            [species, weight, location, dateCaught, lure, lureColour, waterTemp, req.params.id]
+            `UPDATE fishes SET ${updates} WHERE id = ?`,
+            values
         );
         if (result.changes) {
             res.send({ updated: req.params.id });
@@ -100,7 +118,7 @@ app.put('/updateFish/:id', async (req, res) => {
 });
 
 //Delete fish reg
-app.delete('/deleteFish/:id', async (req, res) => {
+app.delete('/deletefish/:id', async (req, res) => {
     try {
         const result = await db.run(
             `DELETE FROM fishes WHERE id = ?`,
