@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import dotenv from 'dotenv';
-import User from './models/User.mjs';
+import { openDb } from '../database/databaseUserCon.mjs';
 
 // Load Environment Variables
 dotenv.config();
@@ -13,9 +13,12 @@ const jwtOptions = {
 };
 
 // JWT Strategy
-passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
+passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
     try {
-        const user = await User.findById(jwt_payload.id);
+
+        const db = await openDb();
+        const user = await db.get("SELECT * FROM users WHERE id = ?", [jwt_payload.id]);
+
         if (user) {
             return done(null, user); // User found
         } else {

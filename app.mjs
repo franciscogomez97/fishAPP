@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fishRoutes from './routes/fishRoutes.mjs';
+import userRoutes from './routes/userRoutes.mjs';
 
 
 // Express server setup
@@ -16,6 +17,7 @@ app.use(multerMiddleware.none());
 
 //Routes
 app.use('/api', fishRoutes);
+app.use('/api', userRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

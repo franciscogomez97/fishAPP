@@ -1,6 +1,6 @@
 import express from 'express';
 import { registerUser, loginUser, getUserData, patchUserData, deleteUser, changeUserPassword } from '../controllers/userController.mjs';
-import passport from './passport.mjs';
+import passport from '../passportJWT/passport.mjs';
 
 const router = express.Router();
 
