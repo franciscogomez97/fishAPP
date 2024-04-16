@@ -24,7 +24,7 @@ async function setup() {
         email           TEXT UNIQUE,
         password_hash   TEXT,
         is_admin        BOOLEAN DEFAULT 0,
-        created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`);
 
     console.log('Table is created or already exists.');
