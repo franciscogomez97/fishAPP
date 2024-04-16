@@ -18,6 +18,15 @@ async function setup() {
         waterTemp   REAL
     )`);
 
+    await db.exec(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username        TEXT UNIQUE,
+        email           TEXT UNIQUE,
+        password_hash   TEXT,
+        is_admin        BOOLEAN DEFAULT 0,
+        created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    )`);
+
     console.log('Table is created or already exists.');
     await db.close();   
 }

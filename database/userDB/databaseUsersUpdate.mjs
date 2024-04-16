@@ -3,7 +3,7 @@ import sqlite3 from 'sqlite3';
 
 async function addNewColumn() {
     const db = await open({
-        filename: './users.sqlite',
+        filename: './fishapp.sqlite',
         driver: sqlite3.Database
     });
 
