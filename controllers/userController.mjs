@@ -1,6 +1,5 @@
 import { openDb } from '../database/userDB/databaseUserCon.mjs';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 // Hash const
 const SALT_ROUNDS = 10;
@@ -39,9 +38,6 @@ async function loginUser(req, res) {
         if (!isMatch) {
             return res.status(401).send('Invalid credentials');
         }
-
-        // Generate JWT
-        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         res.send({ message: 'Logged in successfully', token });
     } catch (error) {
