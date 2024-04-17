@@ -1,4 +1,4 @@
-import { openDb } from '../database/userDB/databaseUserCon.mjs';
+import { openDb } from '../database/fishDB/databaseFishCon.mjs';
 import bcrypt from 'bcrypt';
 
 // Hash const
@@ -26,7 +26,7 @@ async function loginUser(req, res) {
     try {
         const { email, password } = req.body;
         const db = await openDb();
-        
+
         // Search user
         const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
         if (!user) {
@@ -39,7 +39,7 @@ async function loginUser(req, res) {
             return res.status(401).send('Invalid credentials');
         }
 
-        res.send({ message: 'Logged in successfully', token });
+        res.send({ message: 'Logged in successfully' });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
@@ -48,14 +48,7 @@ async function loginUser(req, res) {
 async function getUserData(req, res) {
     const db = await openDb();
     try {
-        let userId = req.user.id;
-
-        // Check if user is admin
-        if (req.user.is_admin && req.params.id) {
-            userId = req.params.id;
-        }
-
-        const user = await db.get(`SELECT id, username, email, created_at FROM users WHERE id = ?`, [userId]);
+        const user = await db.get(`SELECT id, username, email, created_at FROM users WHERE id = ?`, [req.params.id]);
         if (user) {
             res.send(user);
         } else {
@@ -100,11 +93,10 @@ async function patchUserData(req, res) {
 async function changeUserPassword(req, res) {
     try {
         const { oldPassword, newPassword } = req.body;
-        const userId = req.user.id;
         const db = await openDb();
 
         // Get the actual hashed password and compare
-        const { password_hash } = await db.get('SELECT password_hash FROM users WHERE id = ?', [userId]);
+        const { password_hash } = await db.get('SELECT password_hash FROM users WHERE id = ?', [req.params.id]);
         const isMatch = await bcrypt.compare(oldPassword, password_hash);
         if (!isMatch) {
             return res.status(401).send('La contraseña actual es incorrecta.');
@@ -124,7 +116,7 @@ async function deleteUser(req, res) {
         const db = await openDb();
 
         // Delete user
-        await db.run('DELETE FROM users WHERE id = ?', [req.user.id]);
+        await db.run('DELETE FROM users WHERE id = ?', [req.params.id]);
         
         res.send('User deleted successfully');
     } catch (error) {

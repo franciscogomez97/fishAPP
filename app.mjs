@@ -1,9 +1,9 @@
 import express from 'express';
 import multer from 'multer';
-import basicAuth from 'express-basic-auth';
 import fishRoutes from './routes/fishRoutes.mjs';
 import userRoutes from './routes/userRoutes.mjs';
-import { password } from 'pg/lib/defaults';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 // Express server setup
@@ -17,16 +17,11 @@ app.use(express.json());
 const multerMiddleware = multer();
 app.use(multerMiddleware.none());
 
-// Basic Auth
-const myAuth = (username, password) => {
-  const userMatches = basicAuth.safeCompare(username, 'admin');
-  const passMatches = basicAuth.safeCompare(password, 'admin');
-  return userMatches && passMatches;
-};
-app.use(basicAuth({
-  authorizer: myAuth,
-  challenge: true
-}));
+// Serve static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'view')));
 
 //Routes
 app.use('/api', fishRoutes);

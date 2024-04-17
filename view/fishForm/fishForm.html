@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fish - Fish Tracker App</title>
+    <link rel="stylesheet" href="fishForm.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Fish</h1>
+        <form id="addFishForm">
+            <div class="form-group">
+                <label for="species">Species</label>
+                <input type="text" id="species" name="species" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <input type="number" id="weight" name="weight" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location">
+            </div>
+            <div class="form-group">
+                <label for="dateCaught">Date Caught</label>
+                <input type="datetime-local" id="dateCaught" name="dateCaught">
+            </div>
+            <div class="form-group">
+                <label for="lure">Lure</label>
+                <input type="text" id="lure" name="lure">
+            </div>
+            <div class="form-group">
+                <label for="lureColour">Lure Colour</label>
+                <input type="text" id="lureColour" name="lureColour">
+            </div>
+            <div class="form-group">
+                <label for="waterTemp">Water Temperature</label>
+                <input type="number" id="waterTemp" name="waterTemp">
+            </div>
+            <button type="submit">Add Fish</button>
+        </form>
+    </div>
+    <script src="fishForm.js"></script>
+</body>
+</html>
