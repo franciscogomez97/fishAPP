@@ -10,6 +10,8 @@ FishApp is a web application developed using Node.js and Express.js, designed to
 - **Responsive Design**: Compatible with various devices, ensuring a smooth user experience across desktops, tablets, and smartphones.
 
 ## Technologies Used
-- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
-- **Express.js**: A fast, unopinionated, minimalist web framework for Node.js.
-- **Other Technologies**: SQLite, HTML and CSS.
+- Node.js
+- Express.js
+- SQLite
+- HTML
+- CSS
