@@ -33,12 +33,12 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="datetime-local"] {
-    width: calc(100% - 24px); /* Ajustar el ancho para dejar espacio para el borde */
+    width: calc(100% - 24px); 
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     transition: border-color 0.3s ease;
-    box-sizing: border-box; /* Incluir el relleno y el borde en el tamaño total */
+    box-sizing: border-box; 
 }
 
 input[type="text"]:focus,
